@@ -48,7 +48,7 @@ function alreadyBoosts(ar, name) {
     let isAlreadyBoost = false;
     const boostsList = ar.querySelectorAll('div.boost');
     boostsList.forEach(boost => {
-        if (boost.querySelector('img').title.toLowerCase().includes(name)) {
+        if (removeDiacritics(boost.querySelector('img').title).toLowerCase().includes(name)) {
             isAlreadyBoost = true;
         }
     });
