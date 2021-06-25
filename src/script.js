@@ -19,11 +19,12 @@ async function putBoosts() {
             if (findAnArticleWidthABoost) return; // Stop the loop
 
             const author = parseAuthorName(ar.querySelector(':scope header.thread-entry__header'));
-            // const boostDiv = ar.querySelector(':scope label[aria-label="Add a boost"]');
+            const boostDiv = ar.querySelector(':scope label[aria-label="Add a boost"]');
         
             if(author !== name) { // If it's not me boosts message
                 // Check if we already have boosts this post
                 if(!alreadyBoosts(ar, name)) {
+					console.log(author, name, !alreadyBoosts(ar, name));
                     boostDiv.click();
                     await sleep(200);
                     const input = boostDiv.querySelector('input');
@@ -38,7 +39,7 @@ async function putBoosts() {
             offset++; // Increment offset
             await sleep(300);
         });
-
+		findAnArticleWidthABoost = true;
         scrollBy(0, 1000);
         await sleep(1000);
     }
