@@ -10,39 +10,55 @@ async function getFromStorage(key) {
 async function putBoosts() {
     let name = removeDiacritics(await getFromStorage("name")).toLowerCase();
 
+    const articles = await findPostWithoutBoosts(name);
+
+    const res = confirm(`Do you want to boosts ${articles.length} posts ?`);    
+    
+    if(res) {
+        articles.forEach(async ar => {
+            const boostDiv = ar.querySelector(':scope label[aria-label="Add a boost"]');
+    
+            boostDiv.click();
+            await sleep(200);
+            const input = boostDiv.querySelector('input');
+            input.value = "👍";
+    
+            await sleep(200);
+            ar.querySelector('input[type="submit"]').click() // Send boost
+            await sleep(300);
+        });
+    }
+
+    // Scroll to the last articles
+    scrollTo(0, articles[articles.length - 1].offsetTop);
+}
+
+async function findPostWithoutBoosts(name, max_date) {
     let findAnArticleWidthABoost = false;
     let offset = 0;
+
+    let articlesWithoutBoosts = [];
 
     while (!findAnArticleWidthABoost) {
         let articles = Array.from(document.querySelectorAll(".thread-entry.thread-entry--with-discuss")).splice(offset);
         articles.forEach(async ar => {
             if (findAnArticleWidthABoost) return; // Stop the loop
-
             const author = parseAuthorName(ar.querySelector(':scope header.thread-entry__header'));
-            const boostDiv = ar.querySelector(':scope label[aria-label="Add a boost"]');
         
             if(author !== name) { // If it's not me boosts message
                 // Check if we already have boosts this post
                 if(!alreadyBoosts(ar, name)) {
-					console.log(author, name, !alreadyBoosts(ar, name));
-                    boostDiv.click();
-                    await sleep(200);
-                    const input = boostDiv.querySelector('input');
-                    input.value = "👍";
-            
-                    await sleep(200);
-                    ar.querySelector('input[type="submit"]').click() // Send boost
+					articlesWithoutBoosts.push(ar);
                 } else {
                     findAnArticleWidthABoost = true;
                 }
             }
             offset++; // Increment offset
-            await sleep(300);
         });
-		findAnArticleWidthABoost = true;
-        scrollBy(0, 1000);
-        await sleep(1000);
+        scrollBy(0, window.innerHeight);
+        await sleep(500);
     }
+    return articlesWithoutBoosts;
 }
 
 function alreadyBoosts(ar, name) {
