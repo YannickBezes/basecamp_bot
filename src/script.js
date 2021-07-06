@@ -21,7 +21,7 @@ async function putBoosts() {
             boostDiv.click();
             await sleep(200);
             const input = boostDiv.querySelector('input');
-            input.value = "👍";
+            input.value = getEmoji();
     
             await sleep(200);
             ar.querySelector('input[type="submit"]').click() // Send boost
@@ -30,8 +30,38 @@ async function putBoosts() {
     }
 
     // Scroll to the last articles
-    scrollTo(0, articles[articles.length - 1].offsetTop);
+    if(articles.length > 0 ) {
+        scrollTo(0, articles[articles.length - 1].offsetTop);
+    }
 }
+
+function getEmoji() {
+    const emojis = {
+        '👍': 0.85,
+        '👀': 0.10,
+        '💪': 0.025,
+        '👏': 0.025
+    };
+
+    return getRandom(emojis);
+}
+
+function getRandom(values) {
+    const weights = Object.values(values);
+    const results =Object.keys(values);
+    let num = Math.random();
+    let s = 0;
+    let lastIndex = weights.length - 1;
+
+    for (var i = 0; i < lastIndex; ++i) {
+        s += weights[i];
+        if (num < s) {
+            return results[i];
+        }
+    }
+
+    return results[lastIndex];
+};
 
 async function findPostWithoutBoosts(name, max_date) {
     let findAnArticleWidthABoost = false;
