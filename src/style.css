@@ -31,7 +31,7 @@ body {
 
 .name-container {
     display: block;
-    margin: 20px 0 20px;
+    margin: 20px 0 10px;
 }
 
 .footer {
@@ -46,8 +46,6 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 input {
@@ -170,21 +168,34 @@ input:focus~.highlight {
     }
 }
 
-#buttonBoost {
-    padding: 10px 20px;
-    border-radius: 0;
-    border: none;
-    background: var(--primary-color);
-    color: #000;
-    font-weight: 700;
-    text-transform: uppercase;
-    cursor: pointer;
+.button-container {
+    margin-bottom: 15px;
+    display: flex;
 }
 
-#buttonBoost:hover {
+.button {
+    border: none;
+    border-radius: 0;
+    color: #000;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    font-weight: 700;
+    background: var(--primary-color);
+    cursor: pointer;
+    margin: 5px;
+}
+
+.button:hover {
     background: var(--primary-color-hover);
 }
 
-.button-container {
-    margin-bottom: 15px;
+.error {
+    font-size: 13px;
+    color: red;
+    margin-top: 2px;
+    transition: opacity 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hidden {
+    opacity: 0;
 }
