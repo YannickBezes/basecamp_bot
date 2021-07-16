@@ -80,7 +80,7 @@ async function findPostWithoutBoosts(name, max_date) {
         articles.forEach(async ar => {
             if (findAnArticleWidthABoost) return; // Stop the loop
             const author = parseAuthorName(ar.querySelector(':scope header.thread-entry__header'));
-        
+
             if(author !== name) { // If it's not me boosts message
                 // Check if we already have boosts this post
                 if(!alreadyBoosts(ar, name)) {
@@ -123,4 +123,6 @@ function sleep(ms) {
     );
 }
 
-putBoosts();
+if (window.location.hostname === "3.basecamp.com") {
+    putBoosts();
+}
