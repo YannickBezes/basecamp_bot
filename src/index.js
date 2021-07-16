@@ -2,18 +2,31 @@ buttonBoost.addEventListener("click", async () => {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
     let name = document.getElementById('inputName').value;
-    chrome.storage.sync.set({ name });
+    let spanError = document.getElementById('span-error');
 
-    chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        files: ['script.js']
-    });
+    if (name !== '' && name !== null) {
+        if (!spanError.classList.contains('hidden')) {
+            spanError.classList.add('hidden');
+        }
+
+        chrome.storage.sync.set({ name });
+
+        chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            files: ['script.js']
+        });
+    } else {
+        if (spanError.classList.contains('hidden')) {
+            spanError.classList.remove('hidden');
+        }
+    }
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
     const inputName = document.getElementById('inputName');
-    
     chrome.storage.sync.get("name", ({ name }) => {
-        inputName.value = name;
+        if (typeof name !== 'undefined') {
+            inputName.value = name;
+        }
     });
 });

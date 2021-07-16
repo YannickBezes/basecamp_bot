@@ -12,26 +12,27 @@ async function putBoosts() {
 
     const articles = await findPostWithoutBoosts(name);
 
-    const res = confirm(`Do you want to boosts ${articles.length} posts ?`);    
-    
-    if(res) {
-        articles.forEach(async ar => {
-            const boostDiv = ar.querySelector(':scope label[aria-label="Add a boost"]');
-    
-            boostDiv.click();
-            await sleep(200);
-            const input = boostDiv.querySelector('input');
-            input.value = getEmoji();
-    
-            await sleep(200);
-            ar.querySelector('input[type="submit"]').click() // Send boost
-            await sleep(300);
-        });
-    }
+    if (articles.length > 0) {
+        const res = confirm(`Do you want to boosts ${articles.length} posts ?`);
 
-    // Scroll to the last articles
-    if(articles.length > 0 ) {
+        if(res) {
+            articles.forEach(async ar => {
+                const boostDiv = ar.querySelector(':scope label[aria-label="Add a boost"]');
+
+                boostDiv.click();
+                await sleep(200);
+                const input = boostDiv.querySelector('input');
+                input.value = getEmoji();
+
+                await sleep(200);
+                ar.querySelector('input[type="submit"]').click() // Send boost
+                await sleep(300);
+            });
+        }
+        // Scroll to the last articles
         scrollTo(0, articles[articles.length - 1].offsetTop);
+    } else {
+        alert('No articles has been found');
     }
 }
 
@@ -71,6 +72,11 @@ async function findPostWithoutBoosts(name, max_date) {
 
     while (!findAnArticleWidthABoost) {
         let articles = Array.from(document.querySelectorAll(".thread-entry.thread-entry--with-discuss")).splice(offset);
+
+        if (articles.length === 0) { // We can't get articles so stop here
+            findAnArticleWidthABoost = true;
+        }
+
         articles.forEach(async ar => {
             if (findAnArticleWidthABoost) return; // Stop the loop
             const author = parseAuthorName(ar.querySelector(':scope header.thread-entry__header'));
