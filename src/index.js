@@ -22,6 +22,14 @@ buttonBoost.addEventListener("click", async () => {
     }
 });
 
+options.addEventListener('click', () => {
+    if (chrome.runtime.openOptionsPage) {
+        chrome.runtime.openOptionsPage();
+    } else {
+        window.open(chrome.runtime.getURL('options/options.html'));
+    }
+});
+
 document.addEventListener('DOMContentLoaded', async () => {
     const inputName = document.getElementById('inputName');
     chrome.storage.sync.get("name", ({ name }) => {
