@@ -15,7 +15,7 @@ async function putBoosts() {
     if (articles.length > 0) {
         const res = confirm(`Do you want to boosts ${articles.length} posts ?`);
 
-        if(res) {
+        if (res) {
             articles.forEach(async ar => {
                 const boostDiv = ar.querySelector(':scope label[aria-label="Add a boost"]');
 
@@ -30,7 +30,8 @@ async function putBoosts() {
             });
         }
         // Scroll to the last articles
-        scrollTo(0, articles[articles.length - 1].offsetTop);
+        const lastArticle = articles[articles.length - 1];
+        scrollTo(0, lastArticle.offsetTop + lastArticle.offsetHeight);
     } else {
         alert('No articles has been found');
     }
@@ -113,7 +114,6 @@ function alreadyBoosts(ar, name) {
 function parseAuthorName(html) {
     return removeDiacritics(html.innerText.split(',')[0].split('\n')[0]).toLowerCase();
 }
-
 
 function removeDiacritics(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
