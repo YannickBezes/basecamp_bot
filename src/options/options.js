@@ -29,6 +29,7 @@ function drawRaw({ emoji, percentage }) {
     const buttonEdit = document.createElement('button');
     buttonEdit.className = 'button edit';
     buttonEdit.innerText = 'Modifier';
+    buttonEdit.addEventListener('click', () => editEmoji(emoji, span))
     divButtonContainer.appendChild(buttonEdit);
 
     // button delete
@@ -82,5 +83,16 @@ function addEmoji() {
             }
             drawRaw({ emoji, percentage });
         }
+    }
+}
+
+function editEmoji(emoji, span) {
+    let percentage = prompt(`Nouveau pourcentage d'apparition pour l'emoji ${emoji}`);
+
+    if (percentage !== null && percentage !== '') {
+        if (parseFloat(percentage) >= 1 && percentage !== '1.00') {
+            percentage /= 100;
+        }
+        span.innerText = percentage * 100;
     }
 }
