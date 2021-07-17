@@ -36,25 +36,20 @@ async function putBoosts() {
     }
 }
 
-function getEmoji() {
-    const emojis = {
-        '👍': 0.85,
-        '👀': 0.10,
-        '💪': 0.025,
-        '👏': 0.025
-    };
+async function getEmoji() {
+    const emojis = await getEmojis();
 
     return getRandom(emojis);
 }
 
-function getRandom(values) {
-    const weights = Object.values(values);
-    const results =Object.keys(values);
+function getRandom(emojis) {
+    const weights = emojis.map(({ percentage }) => percentage);
+    const results = emojis.map(({ emoji }) => emoji);
     let num = Math.random();
     let s = 0;
     let lastIndex = weights.length - 1;
 
-    for (var i = 0; i < lastIndex; ++i) {
+    for (let i = 0; i < lastIndex; ++i) {
         s += weights[i];
         if (num < s) {
             return results[i];
@@ -62,7 +57,7 @@ function getRandom(values) {
     }
 
     return results[lastIndex];
-};
+}
 
 async function findPostWithoutBoosts(name, max_date) {
     let findAnArticleWidthABoost = false;
@@ -70,27 +65,34 @@ async function findPostWithoutBoosts(name, max_date) {
 
     let articlesWithoutBoosts = [];
 
+    let lastLengthArticles = 0;
     while (!findAnArticleWidthABoost) {
-        let articles = Array.from(document.querySelectorAll(".thread-entry.thread-entry--with-discuss")).splice(offset);
+        let articles = Array.from(document.querySelectorAll(".thread-entry.thread-entry--with-discuss"));
 
-        if (articles.length === 0) { // We can't get articles so stop here
-            findAnArticleWidthABoost = true;
-        }
+        if (articles.length > lastLengthArticles) {
+            lastLengthArticles = articles.length;
+            articles = articles.splice(offset);
 
-        articles.forEach(async ar => {
-            if (findAnArticleWidthABoost) return; // Stop the loop
-            const author = parseAuthorName(ar.querySelector(':scope header.thread-entry__header'));
-
-            if(author !== name) { // If it's not me boosts message
-                // Check if we already have boosts this post
-                if(!alreadyBoosts(ar, name)) {
-					articlesWithoutBoosts.push(ar);
-                } else {
-                    findAnArticleWidthABoost = true;
-                }
+            if (articles.length === 0) { // We can't get articles so stop here
+                findAnArticleWidthABoost = true;
+                console.log('stop because there is no articles');
             }
-            offset++; // Increment offset
-        });
+
+            articles.forEach(ar => {
+                if (findAnArticleWidthABoost) return; // Stop the loop
+                const author = parseAuthorName(ar.querySelector(':scope header.thread-entry__header'));
+
+                if (author !== name) { // If it's not me boosts message
+                    // Check if we already have boosts this post
+                    if (!alreadyBoosts(ar, name)) {
+                        articlesWithoutBoosts.push(ar);
+                    } else {
+                        findAnArticleWidthABoost = true;
+                    }
+                }
+                offset++; // Increment offset
+            });
+        }
         scrollBy(0, window.innerHeight);
         await sleep(500);
     }
@@ -125,4 +127,19 @@ function sleep(ms) {
 
 if (window.location.hostname === "3.basecamp.com") {
     putBoosts();
+}
+
+async function getEmojis() {
+    return new Promise(resolve => {
+        chrome.storage.sync.get('listEmojis', ({ listEmojis }) => {
+            if (typeof listEmojis !== 'undefined' && listEmojis !== null && Array.isArray(listEmojis) && listEmojis.length > 0) {
+                resolve(listEmojis);
+            } else {
+                resolve([
+                    { emoji: '👍', percentage: 0.9 },
+                    { emoji: '👀', percentage: 0.1 }
+                ]);
+            }
+        });
+    });
 }
