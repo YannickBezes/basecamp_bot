@@ -58,7 +58,6 @@ function saveEmojis() {
     const tableEmoji = document.getElementById('table-emoji');
 
     const listEmojis = [];
-    console.log(tableEmoji.childElementCount);
     for (let i = 0; i < tableEmoji.childElementCount; i++) {
         const tr = tableEmoji.children[i];
 
@@ -68,7 +67,19 @@ function saveEmojis() {
         listEmojis.push({ emoji, percentage: percentage / 100 });
     }
 
-    chrome.storage.sync.set({ listEmojis });
+    // Check if total of emoji is equal to 1
+    const total = listEmojis.reduce((acc, { percentage }) => acc + percentage, 0);
+    const spanError = document.getElementById('save-error');
+    if (total !== 1) {
+        if (spanError.classList.contains('hidden')) {
+            spanError.classList.remove('hidden');
+        }
+    } else {
+        if (!spanError.classList.contains('hidden')) {
+            spanError.classList.add('hidden');
+        }
+        chrome.storage.sync.set({ listEmojis });
+    }
 }
 
 function addEmoji() {

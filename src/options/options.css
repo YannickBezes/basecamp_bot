@@ -110,10 +110,13 @@ hr {
 .flex {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
 }
 .button.save {
     width: 30%;
-    margin-top: 15px;
+    margin-top: 10px;
     padding: 15px;
     text-transform: uppercase;
     font-weight: 700;
@@ -124,4 +127,12 @@ hr {
 }
 .button.add:hover {
     background: #2196f3;
+}
+
+#save-error {
+    color: red;
+    font-weight: 500;
+}
+#save-error.hidden {
+    opacity: 0;
 }
