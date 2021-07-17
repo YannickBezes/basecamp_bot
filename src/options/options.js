@@ -5,12 +5,13 @@ function drawRaw({ emoji, percentage }) {
     tableEmoji.appendChild(tr);
 
     const tdEmoji = document.createElement('td');
+    tdEmoji.classList.add('emoji');
     tdEmoji.innerText = emoji;
     tr.appendChild(tdEmoji);
 
 
     const tdPercentage = document.createElement('td');
-    tdPercentage.classList.add('td-percentage')
+    tdPercentage.classList.add('td-percentage');
     tr.appendChild(tdPercentage);
 
     // percentage
@@ -27,13 +28,13 @@ function drawRaw({ emoji, percentage }) {
     // button edit
     const buttonEdit = document.createElement('button');
     buttonEdit.className = 'button edit';
-    buttonEdit.innerText = 'Modifier'
+    buttonEdit.innerText = 'Modifier';
     divButtonContainer.appendChild(buttonEdit);
 
     // button delete
     const buttonDelete = document.createElement('button');
     buttonDelete.className = 'button delete';
-    buttonDelete.innerText = 'Supprimer'
+    buttonDelete.innerText = 'Supprimer';
     buttonDelete.addEventListener('click', () => {
         tr.remove()
     });
@@ -49,10 +50,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.getElementById('button-add').addEventListener('click', () => addEmoji());
 
-    document.getElementById('button-save').addEventListener('click', () => {
+    document.getElementById('button-save').addEventListener('click', () => saveEmojis());
+});
 
-    });
-})
+function saveEmojis() {
+    const tableEmoji = document.getElementById('table-emoji');
+
+    const listEmojis = [];
+    console.log(tableEmoji.childElementCount);
+    for (let i = 0; i < tableEmoji.childElementCount; i++) {
+        const tr = tableEmoji.children[i];
+
+        const emoji = tr.getElementsByClassName('emoji')[0].innerText;
+        const percentage = tr.getElementsByClassName('percentage')[0].innerText;
+
+        listEmojis.push({ emoji, percentage: percentage / 100 });
+    }
+
+    chrome.storage.sync.set({ listEmojis });
+}
 
 function addEmoji() {
     const emoji = prompt('Emoji :');
@@ -67,16 +83,4 @@ function addEmoji() {
             drawRaw({ emoji, percentage });
         }
     }
-}
-
-async function getEmojis() {
-    return [
-        { emoji: '👍', percentage: 0.9 },
-        { emoji: '👀', percentage: 0.1 }
-    ];
-    // return new Promise(resolve => {
-    //     chrome.storage.sync.get('listEmojis', (data) => {
-    //         resolve(data);
-    //     })
-    // })
 }
