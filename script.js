@@ -22,7 +22,7 @@ async function putBoosts() {
                 boostDiv.click();
                 await sleep(200);
                 const input = boostDiv.querySelector('input');
-                input.value = getEmoji();
+                input.value = await getEmoji();
 
                 await sleep(200);
                 ar.querySelector('input[type="submit"]').click() // Send boost
