@@ -1,7 +1,7 @@
 {
     "name": "Bot boosts for basecamp",
     "description": "Bot which boosts posts",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "manifest_version": 3,
     "permissions": ["storage", "activeTab", "scripting"],
     "options_page": "options/options.html",
