@@ -81,7 +81,7 @@ async function findPostWithoutBoosts(name, max_date) {
 
             articles.forEach(ar => {
                 if (findAnArticleWidthABoost) return; // Stop the loop
-                const author = parseAuthorName(ar.querySelector(':scope header.thread-entry__header'));
+                const author = parseAuthorName(ar.querySelector('.thread-entry__author'));
 
                 if (author !== name) { // If it's not me boosts message
                     // Check if we already have boosts this post
