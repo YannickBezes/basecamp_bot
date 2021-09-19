@@ -12,23 +12,67 @@
             <hr />
         </div>
 
-		<table class="table">
-			<thead>
-				<th>Emoji</th>
-				<th class="th-percentage">
-					<span>Pourcentage d'apparition (total = 100%)</span>
+		<div class="list-options">
+			<!-- LIST EMOJIS -->
+			<div class="table-container">
+				<h2 class="table-container-title">Pourcentage des émojis</h2>
+				<table class="table">
+					<thead>
+						<th>Emoji</th>
+						<th class="th-column-with-buttons">
+							<span>Pourcentage d'apparition (total = 100%)</span>
 
-					<button class="button add" id="button-add">Ajouter</button>
-				</th>
-			</thead>
-			<tbody id="table-emoji">
-			</tbody>
-		</table>
+							<button class="button add" id="button-add">Ajouter</button>
+						</th>
+					</thead>
 
-		<div class="flex">
-			<span id="save-error" class="hidden">Le total des pourcentage doit être égale à 100%</span>
-			<button class="button save" id="button-save">Sauvegarder</button>
+					<tbody id="table-emoji">
+					</tbody>
+				</table>
+				<span id="save-error" class="hidden">Le total des pourcentage doit être égale à 100%</span>
+			</div>
+
+
+			<!-- LIST AUTHOR TO BOOST -->
+			<div class="table-container">
+				<h2 class="table-container-title">Liste des auteurs à boost</h2>
+				<table class="table">
+					<thead>
+						<th class="th-column-with-buttons">
+							<span>Auteur</span>
+							<button class="button add" id="button-add_author">Ajouter</button>
+						</th>
+					</thead>
+
+					<tbody id="table_author">
+					</tbody>
+				</table>
+			</div>
+
+
+			<!-- LIST EMOJIS BY AUTHORS -->
+			<div class="table-container">
+				<h2 class="table-container-title">Liste des emojis par auteur</h2>
+				<table class="table">
+					<thead>
+						<th>Emojis</th>
+						<th class="th-column-with-buttons">
+							<span>Auteur</span>
+							<button class="button add" id="button-add_emoji-author">Ajouter</button>
+						</th>
+					</thead>
+
+					<tbody id="table_emoji-author">
+					</tbody>
+				</table>
+			</div>
+
+			<!-- SAVE BUTTON -->
+			<div class="flex">
+				<button class="button save" id="button-save">Sauvegarder</button>
+			</div>
 		</div>
+
     </div>
 	<script src="options.js"></script>
 </body>

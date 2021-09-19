@@ -2,18 +2,21 @@
     --background-color: #202020;
     --primary-color: #e9be15;
     --primary-color-hover: #d0aa14;
+    --th-background: #1F2739;
+    --tr-background-even: #2C3446;
+    --tr-background-odd: #495572;
+    --text-color: #FFFFFF;
 }
 
 * {
     box-sizing: border-box;
     user-select: none;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif!important;
 }
 
 body {
     background-color: var(--background-color);
-    color: #ffffff;
-    font-family: 'Open Sans', sans-serif;
+    color: var(--text-color);
     font-size: 14px;
     line-height: 1.42em;
 }
@@ -36,12 +39,26 @@ hr {
     border-color: var(--primary-color);
 }
 
+.list-options .table-container:first-child {
+    margin-top: 25px;
+}
+
+.table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.table-container-title {
+    margin: 0 0 10px;
+}
+
 .table {
     text-align: left;
     overflow: hidden;
     width: 80%;
     display: table;
-    margin: 50px auto 0;
 }
 
 .table th {
@@ -61,27 +78,23 @@ hr {
 }
 
 .table td, .table th {
-    padding: 2%;
+    padding: 20px;
 }
 
 /* Background-color of the odd rows */
 .table tr:nth-child(odd) {
-    background-color: #323C50;
+    background-color: var(--tr-background-odd);
 }
 
 /* Background-color of the even rows */
 .table tr:nth-child(even) {
-    background-color: #2C3446;
+    background-color: var(--tr-background-even);
 }
 
 .table th {
-    background-color: #1F2739;
+    background-color: var(--th-background);
 }
 
-.table tr:hover {
-    background-color: #464A52;
-    box-shadow: 0 6px 6px -6px #0E1119;
-}
 
 .button {
     width: 100px;
@@ -90,7 +103,7 @@ hr {
     background: var(--primary-color);
     border: none;
     cursor: pointer;
-    box-shadow: 1px 2px 3px 1px #1f2739;
+    box-shadow: 1px 2px 3px 1px var(--th-background);
     font-weight: 600;
 }
 .button:hover {
@@ -103,9 +116,10 @@ hr {
     background: #f44336;
 }
 .td-percentage,
-.th-percentage{
+.th-column-with-buttons{
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 .flex {
     display: flex;
