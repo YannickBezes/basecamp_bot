@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Table emojis by authors
     const listEmojisByAuthor = await getFromStorage('listEmojisByAuthor');
     if (listEmojisByAuthor !== null) {
-        listEmojisByAuthor.forEach(data => drawRowEmojiByAuthor(data));
+        Object.keys(listEmojisByAuthor).forEach(author => drawRowEmojiByAuthor({ emoji: listEmojisByAuthor[author], author }));
     }
     document.getElementById('button-add_emoji-author').addEventListener('click', () => addEmojiByAuthor());
 
@@ -179,14 +179,14 @@ function saveAuthors() {
 function saveEmojisByAuthor() {
     const tableEmojisByAuthor = document.getElementById('table_emoji-author');
 
-    const listEmojisByAuthor = [];
+    const listEmojisByAuthor = {};
     for (let i = 0; i < tableEmojisByAuthor.childElementCount; i++) {
         const tr = tableEmojisByAuthor.children[i];
 
         const emoji = tr.getElementsByClassName('emoji')[0].innerText;
         const author = tr.getElementsByClassName('author')[0].innerText;
 
-        listEmojisByAuthor.push({ emoji, author });
+        listEmojisByAuthor[author] = emoji;
     }
 
     chrome.storage.sync.set({ listEmojisByAuthor });
@@ -306,7 +306,7 @@ async function getEmojis() {
 }
 
 async function getFromStorage(key) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
         chrome.storage.sync.get(key, resolve);
     }).then(result => {
         if (key === null) {

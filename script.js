@@ -1,4 +1,4 @@
-const QUERY_SELECTOR_AUTHOR = '.thread-entry__author'
+let QUERY_SELECTOR_AUTHOR = '.thread-entry__author'
 
 async function getFromStorage(key) {
     return new Promise((resolve) => {
@@ -32,7 +32,7 @@ async function putBoosts() {
                 input.value = await getEmoji(parseAuthorName(ar.querySelector(QUERY_SELECTOR_AUTHOR)));
 
                 await sleep(200);
-                //ar.querySelector('input[type="submit"]').click() // Send boost
+                ar.querySelector('input[type="submit"]').click() // Send boost
                 await sleep(300);
             }
 
@@ -48,7 +48,7 @@ async function putBoosts() {
 async function getEmoji(author) {
     const emojisOverrideByAuthor = await getFromStorage('listEmojisByAuthor');
 
-    if (emojisOverrideByAuthor !== null && emojisOverrideByAuthor.keys().length > 0 &&emojisOverrideByAuthor.keys().includes(author)) {
+    if (emojisOverrideByAuthor !== null && Object.keys(emojisOverrideByAuthor).length > 0 && Object.keys(emojisOverrideByAuthor).includes(author)) {
         return emojisOverrideByAuthor[author];
     }
     const emojis = await getEmojis();
@@ -74,7 +74,7 @@ function getRandom(emojis) {
 
 async function findPostWithoutBoosts(name) {
     let findAnArticleWidthABoost = false;
-    let maxDateHasPassed = false;
+    // let maxDateHasPassed = false;
     let offset = 0;
 
     let articlesWithoutBoosts = [];
