@@ -32,7 +32,7 @@ async function putBoosts() {
                 input.value = await getEmoji(parseAuthorName(ar.querySelector(QUERY_SELECTOR_AUTHOR)));
 
                 await sleep(200);
-                ar.querySelector('input[type="submit"]').click() // Send boost
+                //ar.querySelector('input[type="submit"]').click() // Send boost
                 await sleep(300);
             }
 
@@ -48,7 +48,7 @@ async function putBoosts() {
 async function getEmoji(author) {
     const emojisOverrideByAuthor = await getFromStorage('listEmojisByAuthor');
 
-    if (emojisOverrideByAuthor.keys().includes(author)) {
+    if (emojisOverrideByAuthor !== null && emojisOverrideByAuthor.keys().length > 0 &&emojisOverrideByAuthor.keys().includes(author)) {
         return emojisOverrideByAuthor[author];
     }
     const emojis = await getEmojis();
@@ -105,7 +105,7 @@ async function findPostWithoutBoosts(name) {
                         articlesWithoutBoosts.push(ar);
                     } else {
                         findAnArticleWidthABoost = true;
-                        return; // Stop the loop
+                        break; // Stop the loop
                     }
                 }
                 offset++; // Increment offset
