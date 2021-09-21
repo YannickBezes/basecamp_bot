@@ -99,7 +99,7 @@ async function findPostWithoutBoosts(name) {
                 const author = parseAuthorName(ar.querySelector(QUERY_SELECTOR_AUTHOR));
                 const listOfAuthors = await getFromStorage('listAuthors');
 
-                if (author !== name && (listOfAuthors.includes(author) || listOfAuthors.length === 0)) {
+                if (author !== name && (Object.keys(listOfAuthors).includes(author) || Object.keys(emojisOverrideByAuthor).length === 0)) {
                     // Check if we already have boosts this post
                     if (!alreadyBoosts(ar, name)) {
                         articlesWithoutBoosts.push(ar);
